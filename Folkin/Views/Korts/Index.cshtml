@@ -1,0 +1,145 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<Folkin.Models.Kort>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="container">
+
+    <h1>Your Cards</h1>
+    <p>
+        Here is all your cards listed. For each card in the list, you can edit, delete or send the card.
+    </p>
+    <p>
+        Click the button below to create a new card!<br />
+        <a class="btn btn-outline-info" asp-action="Create">Create New</a>
+    </p>
+    <div class="row ">
+        @foreach (var item in Model)
+        {
+            <div class="card shadow-sm" style="width: 350px; height: 600px; margin: 10px;">
+                <div class="image-card-container">
+                    @if (item.Abstract)
+                    {
+                        <img class="card-img-top text-white" src="~/images/brown-blank-card.png" alt="Abstract">
+                        <div class="card-title-text text-white">@item.Titel</div>
+                        <div class="card-type-text text-white">@string.Join("|", item.Korts_og_Types.Select(x => x.Type.Titel))</div>
+                        <div class="card-description-text text-white">@item.Beskivelse</div>
+                        <ul class="card-tag-list text-white">
+                            @foreach (var tag in item.Korts_og_tags.Select(x => x.Tags))
+                            {
+                                var tagString = string.Empty;
+
+                                if (tag.Type != null)
+                                {
+                                    tagString = (tag.Type + "|" + tag.Titel);
+                                    <li>@tagString</li>
+                                }
+                                else
+                                {
+                                    tagString = tag.Titel;
+                                    <li>@tagString</li>
+                                }
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <img class="card-img-top" src="~/images/white-blank-card.png" alt="Real">
+                        <div class="card-title-text">@item.Titel</div>
+                        <div class="card-type-text">@string.Join("|", item.Korts_og_Types.Select(x => x.Type.Titel))</div>
+                        <div class="card-description-text">@item.Beskivelse</div>
+                        <ul class="card-tag-list">
+                            @foreach (var tag in item.Korts_og_tags.Select(x => x.Tags))
+                            {
+                                var tagString = string.Empty;
+
+                                if (tag.Type != null)
+                                {
+                                    tagString = (tag.Type + "|" + tag.Titel);
+                                    <li>@tagString</li>
+                                }
+                                else
+                                {
+                                    tagString = tag.Titel;
+                                    <li>@tagString</li>
+                                }
+                            }
+                        </ul>
+                    }
+
+
+                    <div class="row">
+                        @if (item.Abstract)
+                        {
+                            <div class="tag-icons" style="filter: invert(100%) sepia(98%) saturate(0%) hue-rotate(311deg) brightness(102%) contrast(102%)">
+                                @foreach (var tag in item.Korts_og_tags.Select(x => x.Tags))
+                                {
+                                    if (tag.IconURL != null)
+                                    {
+
+
+                                        <img src="~/images/icons/@tag.IconURL" class="tag-icons-icon" />
+
+                                    }
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="tag-icons">
+                                @foreach (var tag in item.Korts_og_tags.Select(x => x.Tags))
+                                {
+                                    if (tag.IconURL != null)
+                                    {
+
+
+                                        <img src="~/images/icons/@tag.IconURL" class="tag-icons-icon" />
+
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    @if (item.SillhouetteId != null)
+                    {
+                        if (item.Abstract)
+                        {
+                            <div class="card-silhouette" style="filter: invert(100%) sepia(98%) saturate(0%) hue-rotate(311deg) brightness(102%) contrast(102%)"><img src="~/images/silhouettes/@item.Sillhouette.IconURL" class="card-silhouette-img" /></div>
+                        }
+                        else
+                        {
+                            <div class="card-silhouette"><img src="~/images/silhouettes/@item.Sillhouette.IconURL" class="card-silhouette-img" /></div>
+                        }
+                    }
+
+
+
+                </div>
+                <div class="card-body">
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger" style="float:left;">Delete</a>
+
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary" style="float:right; margin-left: 5px;">Edit</a>
+
+                    <button class="btn dropdown-toggle btn-success" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="float:right;">
+                        Send
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        @{
+                            List<PlayerInfo> users = ViewBag.Users;
+                            foreach (var playerinfo in users)
+                            {
+                                <a class="dropdown-item" asp-action="ChangeOwner" asp-route-cardId="@item.Id" asp-route-newUserId="@playerinfo.Id">@playerinfo.UserName</a>
+                            }
+                        }
+                    </div>
+
+
+
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

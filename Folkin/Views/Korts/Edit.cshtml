@@ -1,0 +1,71 @@
+﻿@model KortViweModls
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container">
+
+    <h1>Edit</h1>
+
+    <h4>Kort</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <div class="d-flex">
+                        <div class="d-flex m-2">
+                            <input type="radio" asp-for="Abstract" value="true" />
+                            <label class="ml-2">Abstract</label>
+                        </div>
+                        <div class="d-flex m-2">
+                            <input type="radio" asp-for="Abstract" value="false" />
+                            <label class="ml-2">Real</label>
+                        </div>
+                    </div>
+                    <span asp-validation-for="Abstract" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Name</label>
+                    <input asp-for="Titel" class="form-control" />
+                    <span asp-validation-for="Titel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Types </label>
+                    <select asp-for="TypeIds" class="form-control" asp-items="ViewBag.Types" multiple><option></option></select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Tags </label>
+                    <select asp-for="TagIds" class="form-control" asp-items="ViewBag.Tags" multiple><option></option></select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Description</label>
+                    <textarea asp-for="Beskivelse" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Beskivelse" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Sillhouette</label>
+                    <select asp-for="SillhouetteId" class="form-control" asp-items="ViewBag.Sillhouettes"><option></option></select>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <a class="btn btn-danger" asp-action="Index">Cancel</a>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save Card" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -1,0 +1,112 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Folkin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #352C2C">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Folkin.io</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav ml-auto">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="nav-item" style="border-right: 1px solid gray; padding: 10px 25px 10px 25px;">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Korts" asp-action="Index">Cards</a>
+                        </li>
+                        <li class="nav-item" style="border-right: 1px solid gray; padding: 10px 25px 10px 25px;">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Korts" asp-action="Create">Create Card</a>
+                        </li>
+                        <li class="nav-item" style="border-right: 1px solid gray; padding: 10px 25px 10px 25px;">
+                            <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a>
+                        </li>
+                        <li class="nav-item" style="padding: 10px 25px 10px 25px;">
+                            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button id="logout" type="submit" class="nav-link btn btn-link text-white">Log out</button>
+                            </form>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item" style="border-right: 1px solid gray; padding: 10px 25px 10px 25px;">
+                            <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                        </li>
+                        <li class="nav-item" style="padding: 10px 25px 10px 25px;">
+                            <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+        @*<nav class="navbar navbar-dark navbar-collapse" style="background: #201B1B;">
+        <div class="container ">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Folkin</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+        <ul class="navbar-nav ml-auto flex-grow-1">
+        @if (SignInManager.IsSignedIn(User))
+        {
+        <li class="nav-item">
+        <a class="nav-link text-white" asp-area="" asp-controller="Korts" asp-action="Index">Cards</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link text-white" asp-area="" asp-controller="Korts" asp-action="Index">Create Card</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index">Profile</a>
+        </li>
+        <li class="nav-item">
+        <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button id="logout" type="submit" class="nav-link btn btn-link text-white">Log out</button>
+        </form>
+        </li>
+        }
+        else
+        {
+        <li class="nav-item">
+        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+        }
+
+        </ul>
+        </div>
+        </div>
+        <div class="justify-content-end">
+        <partial name="_LoginPartial" />
+        </div>
+        </nav>*@
+    </header>
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Folkin - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
